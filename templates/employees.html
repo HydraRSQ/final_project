@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="sort_by">
+<form action="/employees" method = "post">
+    <select name="sort_type">
+  <option value="name">By name</option>
+  <option value="specialization">By specialization</option>
+  <option value="id">By id</option>
+  <option value="salary">By salary</option>
+</select>
+    <input type="text"  name = "search" placeholder="Search">
+    <input type="submit" value="Sort">
+</form>
+</div>
+<div class="search_by">
+    <form action="/employees" method = "post">
+
+    </form>
+</div>
+<div class="to_create">
+<form action="/create_employee" >
+    <input type="submit" value="New employee" />
+</form>
+</div>
+<hr>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>specialization</th>
+        <th>Salary</th>
+        <th>Project</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in data%}
+        <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[5]}}</td>
+                <td>
+                    <form action="/delete_employee" method="post">
+                        <input type="hidden" name="delete" value={{row[0]}}>
+                    <input type="submit" value="Delete" id={{row[0]}}>
+                    </form>
+                    <form action="/profile_employee/{{row[0]}}" method="post">
+                        <input type="hidden" name="profile" value={{row[0]}}>
+                    <input type="submit" value="Profile" id={{row[0]}}>
+                    </form>
+                </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+{%endblock%}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{%block body%}
+<div class = "container">
+    <h1>Create employee</h1><br>
+    <form action="/create_employee" method = "post">
+        <ul class="menu_employee">
+        <li><input type="text" class="form-control" name="name" id="name" placeholder="Name"></li><br>
+        <li><input type="text" class="form-control" name="specialization" id="specialization" placeholder="specialization"></li><br>
+        <li><input type="number" class="form-control" name="salary" id="salary" placeholder="salary"></li><br>
+        <li><input type="number" class="form-control" name="bonus" id="bonus" placeholder="bonus"></li><br>
+        <li><input type="text" class="form-control" name="project" id="project" placeholder="project"></li><br>
+            </ul>
+        <button type="submit">Create</button>
+    </form>
+</div>
+{%endblock%}

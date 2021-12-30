@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+{{ data['name'] }}
+<hr>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <p class="dline">
+                Name: {{ data['name'] }}<br>
+                Salary: {{ data['salary'] }}<br>
+                Specialization: {{ data['specialization'] }}<br>
+                Bonus: {{ data['bonus'] }}<br>
+                Project: {{ data['project'] }}</p>
+        </td>
+        <td>
+            <form action="/change_employee" method = "post">
+        <ul class="menu_employee">
+            <input type="hidden" name="id" value = {{data['id']}}>
+        <input type="text" class="form-control" name="name" id="name" placeholder="name"><br>
+        <input type="text" class="form-control" name="specialization" id="specialization" placeholder="specialization"><br>
+        <input type="text" class="form-control" name="salary" id="salary" placeholder="salary"><br>
+        <input type="number" class="form-control" name="bonus" id="bonus" placeholder="bonus"><br>
+        <input type="data" class="form-control" name="project" id="project" placeholder="project"><br>
+            </ul>
+        <button type="submit">Change</button>
+        </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+{% endblock %}

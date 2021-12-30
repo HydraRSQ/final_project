@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<h1>Statistics</h1>
+<hr>
+<table>
+    <thead></thead>
+    <tbody>
+    <tr>
+        <th>
+            <div class="button_stat">
+            <form action="/statistics"  method = "post">
+
+                <input type="hidden" name="projects">
+                <input type="submit" value="Projects" class="btn" id = "projects"/>
+            </form>
+            </div>
+                <div class="button_stat" >
+            <form action="/statistics" method = "post">
+                <input type="hidden" name="salary">
+                <input type="submit" value="Salary" class="btn" id = "salary"/>
+            </form>
+                </div>
+                    <div class="button_stat">
+            <form action="/statistics"  method = "post">
+                <input type="hidden" name="bonus">
+                <input type="submit" value="Bonus" class="btn" id = "bonus"/>
+            </form>
+            </div>
+        </th>
+        <th>{{ div_placeholder }}</th>
+    </tr>
+    </tbody>
+</table>
+{% endblock %}

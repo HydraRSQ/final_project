@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="sort_by">
+<form action="/projects" method = "post">
+    <select name="sort_type">
+  <option value="name">By name</option>
+  <option value="status">By status</option>
+  <option value="id">By id</option>
+  <option value="budget ASC">By budget</option>
+  <option value="deadline">By deadline</option>
+</select>
+    <input type="text"  name = "search" placeholder="Search">
+    <input type="submit" value="Sort">
+</form>
+</div>
+<div class="search_by">
+    <form action="/projects" method = "post">
+
+    </form>
+</div>
+<div class="to_create">
+<form action="/create_project" >
+    <input type="submit" value="New project" />
+</form>
+</div>
+<hr>
+<div class="info_table">
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Descript</th>
+        <th>Budget</th>
+        <th>Deadline</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in data%}
+        <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3][:10]}}...</td>
+                <td>{{row[4]}}</td>
+                <td>{{row[5]}}</td>
+                <td>
+                    <form action="/delete_project" method="post">
+                        <input type="hidden" name="delete" value={{row[0]}}>
+                    <input type="submit" value="Delete" id={{row[0]}}>
+                    </form>
+                    <form action="/project_info/{{row[0]}}" method="post">
+                        <input type="hidden" name="profile" value={{row[0]}}>
+                    <input type="submit" value="Profile" id={{row[0]}}>
+                    </form>
+                </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+
+</table>
+</div>
+
+{%endblock%}
