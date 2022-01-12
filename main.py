@@ -16,11 +16,19 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    """
+    Welcome page display
+    show index.html
+    """
     return render_template('index.html')
 
 
 @app.route('/statistics', methods=["POST", "GET"])
 def test():
+    """
+    Page with charts by parameters: the number of employees on the project, salary, bonuses.
+    Returns a table with data
+    """
     fig = create_graph.project_graph()
     if request.method == 'POST':
         if 'salary' in request.form.keys():
@@ -35,6 +43,11 @@ def test():
 
 @app.route('/project_info/<user_id>', methods=["POST", "GET"])
 def project_info(user_id):
+    """
+    The function shows information about the project. Returns an error if id does not exist
+    :param user_id:
+    :return:
+    """
     if request.method == 'POST':
         update_project.working_on_project(user_id)
         data = select.select_project(user_id)
@@ -47,6 +60,10 @@ def project_info(user_id):
 
 @app.route('/change_project', methods=["POST", "GET"])
 def change_project():
+    """
+    The function accepts a POST request to change data in the database
+    :return:
+    """
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
@@ -64,6 +81,10 @@ def change_project():
 
 @app.route('/projects', methods=["POST", "GET"])
 def projects():
+    """
+    The function shows a list of all projects and brief information about them. Also sorts by the specified parameters
+    :return:
+    """
     con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     data = cur.execute('Select * from projects_table').fetchall()
@@ -76,6 +97,10 @@ def projects():
 
 @app.route('/delete_project', methods=["POST", "GET"])
 def delete_project():
+    """
+    Deleting a project by id
+    :return:
+    """
     if request.method == "POST":
         if 'delete' in request.form.keys():
             delete.delete_project(request.form['delete'])
@@ -86,6 +111,11 @@ def delete_project():
 
 @app.route('/create_project', methods=["POST", "GET"])
 def create_project():
+    """
+    Displays the page with the creation of a new project. After writing the data, it is redirected to a page with a
+    list of all employees
+    :return:
+    """
     if request.method == "POST":
         name = request.form['name']
         status = request.form['status']
@@ -102,6 +132,10 @@ def create_project():
 
 @app.route('/employees', methods=["POST", "GET"])
 def employees():
+    """
+    Displaying a list of workers and brief information about them. Also sorts by the specified parameters
+    :return:
+    """
     con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     data = cur.execute('Select * from employees_table').fetchall()
@@ -113,6 +147,10 @@ def employees():
 
 @app.route('/change_employee', methods=["POST", "GET"])
 def change_employee():
+    """
+    The function accepts a POST request to change data in the employee database
+    :return:
+    """
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
@@ -128,6 +166,11 @@ def change_employee():
 
 @app.route('/profile_employee/<user_id>', methods=["POST", "GET"])
 def profile_employees(user_id):
+    """
+    The function shows information about the employee. Returns an error if id does not exist
+    :param user_id:
+    :return:
+    """
     if request.method == 'POST':
         data = select.select_employees(user_id)
         logger.info(f'Show employee profile. Id: {user_id}')
@@ -139,6 +182,10 @@ def profile_employees(user_id):
 
 @app.route('/delete_employee', methods=["POST", "GET"])
 def delete_employee():
+    """
+    Deleting a project by id
+    :return:
+    """
     if request.method == "POST":
         if 'delete' in request.form.keys():
             delete.delete_employee(request.form['delete'])
@@ -149,6 +196,11 @@ def delete_employee():
 
 @app.route('/create_employee', methods=["POST", "GET"])
 def create_employee():
+    """
+    Displaying the page with the creation of a new employee. After writing the data, it is redirected to a page with
+    a list of all employees
+    :return:
+    """
     if request.method == "POST":
         name = request.form['name']
         specialization = request.form['specialization']
@@ -164,31 +216,56 @@ def create_employee():
 
 @app.route('/api/v1.0/delete_employee/<int:id>', methods=['DELETE'])
 def api_delete_employee(id):
+    """
+    API request to delete an employee by id
+    :param id:
+    :return:
+    """
     logger.info(f'Removing an employee using the API')
     return delete.delete_employee(id)
 
 
 @app.route('/api/v1.0/delete_project/<int:id>', methods=['DELETE'])
 def api_delete_project(id):
+    """
+    API request to delete a project by id
+    :param id:
+    :return:
+    """
     logger.info(f'Deleting a project using the API. ID: {id}')
     return delete.delete_project(id)
 
 
 @app.route('/api/v1.0/info_project/<int:id>', methods=['GET'])
 def api_info_project(id):
+    """
+    API request to get project data in json
+    :param id:
+    :return:
+    """
     logger.info(f'Displaying information about projects using the API. ID: {id}')
     return select.select_project(id)
 
 
 @app.route('/api/v1.0/info_employee/<int:id>', methods=['GET'])
 def api_info_employee(id):
+    """
+    API request to get employee data in json
+    :param id:
+    :return:
+    """
     logger.info(f'Displaying employee information using the API. ID: {id}')
     return select.select_employees(id)
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
+    """
+    The function is called if a non-existing page is called
+    :param error:
+    :return:
+    """
+    return render_template('not_found.html')
 
 
 if __name__ == '__main__':

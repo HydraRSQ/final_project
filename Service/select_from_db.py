@@ -3,7 +3,12 @@ import json
 
 
 def select_project(id):
-    con = sqlite3.connect('D:\Homework\project\Service\\base.db')
+    """
+    Getting data from database to json by id
+    :param id:
+    :return:
+    """
+    con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     tmp = cur.execute(f'Select * from projects_table where id = {id}').fetchall()[0]
     data = {}
@@ -18,7 +23,12 @@ def select_project(id):
 
 
 def select_employees(id):
-    con = sqlite3.connect('D:\Homework\project\Service\\base.db')
+    """
+    Getting data from database to json by id
+    :param id:
+    :return:
+    """
+    con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     tmp = cur.execute(f'Select * from employees_table where id = {id}').fetchall()[0]
     data = {}

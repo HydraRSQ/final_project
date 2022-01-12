@@ -7,7 +7,7 @@ import pandas as pd
 
 
 def project_graph():
-    con = sqlite3.connect('D:\Homework\project\Service\\base.db')
+    con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     data = cur.execute('Select * from projects_table').fetchall()
     name = [dat[1] for dat in data]
@@ -19,7 +19,7 @@ def project_graph():
 
 
 def salary_graph():
-    con = sqlite3.connect('D:\Homework\project\Service\\base.db')
+    con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     data = cur.execute('Select * from employees_table').fetchall()
     name = [dat[1] for dat in data]
@@ -32,7 +32,7 @@ def salary_graph():
 
 
 def bonus_graph():
-    con = sqlite3.connect('D:\Homework\project\Service\\base.db')
+    con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     data = cur.execute('Select * from employees_table').fetchall()
     name = [dat[1] for dat in data]

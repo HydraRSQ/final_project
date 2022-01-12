@@ -2,6 +2,11 @@ import sqlite3
 
 
 def sort_employees(arr):
+    """
+    Returns data sorted by parameter
+    :param arr:
+    :return:
+    """
     if len(arr['search']) == 0:
         data = f'Select * from employees_table Order by "{arr["sort_type"]}"'
     else:
@@ -9,6 +14,11 @@ def sort_employees(arr):
     return data
 
 def sort_projects(arr):
+    """
+    Returns data sorted by parameter
+    :param arr:
+    :return:
+    """
     if len(arr['search']) == 0:
         data = f'Select * from projects_table Order by {arr["sort_type"]}'
     else:

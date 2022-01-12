@@ -3,6 +3,15 @@ from Service import update_project_info as info
 
 
 def employees_table(name, specialization, salary, bonus, project):
+    """
+    Adding an employee
+    :param name:
+    :param specialization:
+    :param salary:
+    :param bonus:
+    :param project:
+    :return:
+    """
     con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     cur.execute('CREATE TABLE if not exists employees_table (id	INTEGER PRIMARY KEY AUTOINCREMENT, name	TEXT, '
@@ -18,6 +27,15 @@ def employees_table(name, specialization, salary, bonus, project):
 
 
 def project_table(name, status, descript, budget, deadline):
+    """
+    Adding a project
+    :param name:
+    :param status:
+    :param descript:
+    :param budget:
+    :param deadline:
+    :return:
+    """
     con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     cur.execute('CREATE TABLE if not exists projects_table (id	INTEGER PRIMARY KEY AUTOINCREMENT, name	TEXT, '

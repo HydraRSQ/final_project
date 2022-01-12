@@ -2,6 +2,11 @@ import sqlite3
 import json
 
 def delete_employee(id):
+    """
+    Removing an employee
+    :param id:
+    :return:
+    """
     con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     dat = cur.execute(f'Select 1 from employees_table where id = "{id}"').fetchall()
@@ -14,6 +19,11 @@ def delete_employee(id):
     return json.dumps(result)
 
 def delete_project(id):
+    """
+    Deleting a project
+    :param id:
+    :return:
+    """
     con = sqlite3.connect('Service/base.db')
     cur = con.cursor()
     dat = cur.execute(f'Select 1 from projects_table where id = "{id}"').fetchall()
