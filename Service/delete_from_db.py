@@ -15,7 +15,7 @@ def delete_employee(id):
             with connection.cursor() as cur:
                 cur.execute(f'delete from employees_table where id = "{id}"')
                 connection.commit()
-                return {'success': True}
+        return {'success': True}
     except:
         return {'success': False}
 
@@ -32,7 +32,7 @@ def delete_project(id):
             with connection.cursor() as cur:
                 cur.execute(f'delete from projects_table where id = "{id}"')
                 connection.commit()
-                return {'success': True}
+        return {'success': True}
 
     except:
         return {'success': False}

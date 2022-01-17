@@ -4,14 +4,19 @@ import plotly.express as px
 import sqlite3
 import numpy as np
 import pandas as pd
+import pymysql
+from config import host, user, password, database
+
 
 
 def project_graph():
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    data = cur.execute('Select * from projects_table').fetchall()
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    with connection:
+        with connection.cursor() as cur:
+            cur.execute('Select * from projects_table')
+            data = cur.fetchall()
     name = [dat[1] for dat in data]
-    employees = [dat[6] for dat in data]
+    employees = [dat[5] for dat in data]
     fig = px.histogram(x=name, y=employees)
     fig.update_layout(xaxis_title="Employees", yaxis_title="Project")
     fig = fig.to_html(full_html=False)
@@ -19,9 +24,11 @@ def project_graph():
 
 
 def salary_graph():
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    data = cur.execute('Select * from employees_table').fetchall()
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    with connection:
+        with connection.cursor() as cur:
+            cur.execute('Select * from employees_table')
+            data = cur.fetchall()
     name = [dat[1] for dat in data]
     salary = [dat[3] for dat in data]
     fig = px.histogram(x=name, y=salary)
@@ -32,9 +39,11 @@ def salary_graph():
 
 
 def bonus_graph():
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    data = cur.execute('Select * from employees_table').fetchall()
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    with connection:
+        with connection.cursor() as cur:
+            cur.execute('Select * from employees_table')
+            data = cur.fetchall()
     name = [dat[1] for dat in data]
     salary = [dat[4] for dat in data]
     fig = px.histogram(x=name, y=salary)

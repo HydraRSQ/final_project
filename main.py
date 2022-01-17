@@ -259,5 +259,5 @@ def not_found(error):
 
 
 if __name__ == '__main__':
-    create_base.crate_table()
+    create_base.create_tables()
     app.run(debug=False)

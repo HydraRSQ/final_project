@@ -1,7 +1,6 @@
 import pymysql
 from config import host, user, password, database
 
-connection = pymysql.connect(host=host, user=user, password=password, database=database)
 
 def select_project(id):
     """
@@ -9,9 +8,11 @@ def select_project(id):
     :param id:
     :return:
     """
+
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
     with connection:
         with connection.cursor() as cur:
-            cur.execute(f'Select * from projects_table where id = {id}')
+            cur.execute(f'Select * from projects_table where id = "{id}"')
             tmp = cur.fetchall()
             data = {}
             cur.execute('SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = "projects_table"')
@@ -29,9 +30,11 @@ def select_employees(id):
     :param id:
     :return:
     """
+
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
     with connection:
         with connection.cursor() as cur:
-            cur.execute(f'Select * from employees_table where id = {id}')
+            cur.execute(f'Select * from employees_table where id = "{id}"')
             tmp = cur.fetchall()
             data = {}
             cur.execute('SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = "employees_table"')

@@ -29,7 +29,7 @@ def employees_table(name, specialization, salary, bonus, project):
                     info.working_on_project(tmp[0][0])
 
                 connection.commit()
-                return {'id': user_id, 'success': True}
+        return {'id': user_id, 'success': True}
     except:
         return {'success':False}
 
@@ -55,6 +55,6 @@ def project_table(name, status,  budget, deadline):
                 cur.execute(f'Select id from projects_table where name = "{name}"')
                 tmp = cur.fetchall()
                 connection.commit()
-                return {'id': tmp, 'success': True}
+        return {'id': tmp, 'success': True}
     except Exception as err:
         return {'success':False, 'error' : err}

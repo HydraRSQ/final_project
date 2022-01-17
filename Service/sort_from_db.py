@@ -40,7 +40,6 @@ def sort_projects(arr):
 
             cur.execute(data)
             responce = cur.fetchall()
-        # connection.close()
     return responce
 
 

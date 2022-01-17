@@ -1,7 +1,7 @@
-import sqlite3
-from Service import path as pat
+import pymysql
+from config import host, user, password, database
 
-path = pat.path()
+connection = pymysql.connect(host=host, user=user, password=password, database=database)
 
 def update_project(**kwargs):
     """
@@ -9,14 +9,17 @@ def update_project(**kwargs):
     :param kwargs:
     :return:
     """
-    con = sqlite3.connect(path)
-    cur = con.cursor()
-    for key in kwargs:
-        if kwargs[key] == '':
-            continue
-        cur.execute(f'Update projects_table Set "{key}" = "{kwargs[key]}"where id = {kwargs["id"]}')
-        con.commit()
-    return
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                for key in kwargs:
+                    if kwargs[key] == '':
+                        continue
+                    cur.execute(f'Update projects_table Set "{key}" = "{kwargs[key]}"where id = {kwargs["id"]}')
+                    con.commit()
+        return {'success': True}
+    except:
+        return {'success':False}
 
 
 def update_employees(**kwargs):
@@ -25,11 +28,14 @@ def update_employees(**kwargs):
     :param kwargs:
     :return:
     """
-    con = sqlite3.connect(path)
-    cur = con.cursor()
-    for key in kwargs:
-        if kwargs[key] == '':
-            continue
-        cur.execute(f'Update employees_table Set "{key}" = "{kwargs[key]}"where id = {kwargs["id"]}')
-        con.commit()
-    return
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                for key in kwargs:
+                    if kwargs[key] == '':
+                        continue
+                    cur.execute(f'Update employees_table Set "{key}" = "{kwargs[key]}"where id = {kwargs["id"]}')
+                    con.commit()
+        return {'success': True}
+    except:
+        return {'success':False}

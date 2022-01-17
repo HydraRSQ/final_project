@@ -20,7 +20,7 @@ def working_on_project(project_id):
                 cur.execute(
                     f'UPDATE `projects_table` SET `employees` = "{data}" WHERE `projects_table`.`id` = "{project_id}"')
                 connection.commit()
-                return {'success': True}
+        return {'success': True}
     except:
         return {'success': False}
 
