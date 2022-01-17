@@ -1,6 +1,7 @@
-import sqlite3
-import json
+import pymysql
+from config import host, user, password, database
 
+connection = pymysql.connect(host=host, user=user, password=password, database=database)
 
 def select_project(id):
     """
@@ -8,17 +9,17 @@ def select_project(id):
     :param id:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    tmp = cur.execute(f'Select * from projects_table where id = {id}').fetchall()[0]
-    data = {}
-    all_calumn = cur.execute('PRAGMA table_info(projects_table)').fetchall()
-    con.commit()
-    x = 0
-    for i in all_calumn:
-        data[i[1]] = tmp[x]
-        x += 1
-    json.dumps(data)
+    with connection:
+        with connection.cursor() as cur:
+            cur.execute(f'Select * from projects_table where id = {id}')
+            tmp = cur.fetchall()
+            data = {}
+            cur.execute('SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = "projects_table"')
+            all_calumn = cur.fetchall()
+            x = 0
+            for i in all_calumn:
+                data[i[0]] = tmp[0][x]
+                x += 1
     return data
 
 
@@ -28,16 +29,17 @@ def select_employees(id):
     :param id:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    tmp = cur.execute(f'Select * from employees_table where id = {id}').fetchall()[0]
-    data = {}
-    all_calumn = cur.execute('PRAGMA table_info(employees_table)').fetchall()
-    con.commit()
-    x = 0
-    for i in all_calumn:
-        data[i[1]] = tmp[x]
-        x += 1
-    json.dumps(data)
+    with connection:
+        with connection.cursor() as cur:
+            cur.execute(f'Select * from employees_table where id = {id}')
+            tmp = cur.fetchall()
+            data = {}
+            cur.execute('SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = "employees_table"')
+            all_calumn = cur.fetchall()
+            x = 0
+            for i in all_calumn:
+                data[i[0]] = tmp[0][x]
+                x += 1
     return data
+
 

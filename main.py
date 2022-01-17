@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, make_response, jsonify, abort
 import sqlite3
+from Service import create_base
 from Service import insert_in_db as insert
 from Service import sort_from_db as sort_by_db
 from Service import delete_from_db as delete
@@ -12,7 +13,6 @@ from loguru import logger
 
 logger.add("debug.log", format="{time} {level} {message}", level= "DEBUG")
 app = Flask(__name__)
-
 
 @app.route('/')
 def index():
@@ -85,11 +85,7 @@ def projects():
     The function shows a list of all projects and brief information about them. Also sorts by the specified parameters
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    data = cur.execute('Select * from projects_table').fetchall()
-    if request.method == "POST":
-        data = cur.execute(sort_by_db.sort_projects(request.form)).fetchall()
+    data = sort_by_db.sort_projects(request.form)
     logger.info(f"Show projects")
 
     return render_template('projects.html', data=data)
@@ -119,11 +115,9 @@ def create_project():
     if request.method == "POST":
         name = request.form['name']
         status = request.form['status']
-        descript = request.form['descript']
         budget = request.form['budget']
         deadline = request.form['deadline']
-        insert.project_table(name, status, descript, budget, deadline)
-
+        responce = insert.project_table(name, status,  budget, deadline)
         logger.info(f"Create project. Name: {name}")
         return redirect('/projects')
 
@@ -136,11 +130,7 @@ def employees():
     Displaying a list of workers and brief information about them. Also sorts by the specified parameters
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    data = cur.execute('Select * from employees_table').fetchall()
-    if request.method == "POST":
-        data = cur.execute(sort_by_db.sort_employees(request.form)).fetchall()
+    data = sort_by_db.sort_employees(request.form)
     logger.info(f'Show employees')
     return render_template('employees.html', data=data)
 
@@ -269,4 +259,5 @@ def not_found(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    create_base.crate_table()
+    app.run(debug=False)

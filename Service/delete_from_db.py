@@ -1,5 +1,7 @@
-import sqlite3
-import json
+import pymysql
+from config import host, user, password, database
+
+
 
 def delete_employee(id):
     """
@@ -7,16 +9,16 @@ def delete_employee(id):
     :param id:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    dat = cur.execute(f'Select 1 from employees_table where id = "{id}"').fetchall()
-    cur.execute(f'delete from employees_table where id = "{id}"')
-    con.commit()
-    if len(dat) == 0:
-        result = {'result': False}
-    else:
-        result = {'result': True}
-    return json.dumps(result)
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                cur.execute(f'delete from employees_table where id = "{id}"')
+                connection.commit()
+                return {'success': True}
+    except:
+        return {'success': False}
+
 
 def delete_project(id):
     """
@@ -24,14 +26,13 @@ def delete_project(id):
     :param id:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    dat = cur.execute(f'Select 1 from projects_table where id = "{id}"').fetchall()
-    cur.execute(f'delete from projects_table where id = "{id}"')
-    con.commit()
-    if len(dat) == 0:
-        result = {'result': False}
-    else:
-        result = {'result': True}
-    return json.dumps(result)
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                cur.execute(f'delete from projects_table where id = "{id}"')
+                connection.commit()
+                return {'success': True}
 
+    except:
+        return {'success': False}

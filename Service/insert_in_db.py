@@ -1,5 +1,7 @@
-import sqlite3
 from Service import update_project_info as info
+import pymysql
+from config import host, user, password, database
+
 
 
 def employees_table(name, specialization, salary, bonus, project):
@@ -12,21 +14,27 @@ def employees_table(name, specialization, salary, bonus, project):
     :param project:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    cur.execute('CREATE TABLE if not exists employees_table (id	INTEGER PRIMARY KEY AUTOINCREMENT, name	TEXT, '
-                'specialization	TEXT, salary	INTEGER, bonus	INTEGER, project	TEXT)')
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                cur.execute(f'INSERT INTO `employees_table` (`id`, `name`, `specialization`, `salary`, `bonus`, `project`) VALUES (NULL, '
+                            f'"{name}", "{specialization}", "{salary}", "{bonus}", "{project}")')
+                connection.commit()
+                cur.execute(f'Select id from projects_table where name = "{project}"')
+                tmp = cur.fetchall()
+                cur.execute(f'Select id from employees_table where name = "{name}" and project = "{project}"')
+                user_id = cur.fetchall()[0][0]
+                if len(tmp) != 0:
+                    info.working_on_project(tmp[0][0])
 
-    cur.execute(f'insert into employees_table (name, specialization, salary, bonus, project) values ("{name}", '
-                f'"{specialization}", "{salary}","{bonus}","{project}")')
-    tmp = cur.execute(f'Select id from projects_table where name = "{project}"').fetchall()
-    con.commit()
-    if len(tmp) != 0:
-        info.working_on_project(tmp[0][0])
-    return
+                connection.commit()
+                return {'id': user_id, 'success': True}
+    except:
+        return {'success':False}
 
 
-def project_table(name, status, descript, budget, deadline):
+def project_table(name, status,  budget, deadline):
     """
     Adding a project
     :param name:
@@ -36,13 +44,17 @@ def project_table(name, status, descript, budget, deadline):
     :param deadline:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
-    cur = con.cursor()
-    cur.execute('CREATE TABLE if not exists projects_table (id	INTEGER PRIMARY KEY AUTOINCREMENT, name	TEXT, '
-                'status	TEXT, descript	text, budget	INTEGER, deadline	TEXT, employees INTEGER)')
+    connection = pymysql.connect(host=host, user=user, password=password, database=database)
+    try:
+        with connection:
+            with connection.cursor() as cur:
+                cur.execute(f'INSERT INTO `projects_table` (`id`, `name`, `status`, `budget`, `deadline`, '
+                            f'`employees`) VALUES (NULL, "{name}", "{status}", "{budget}", "{deadline}", "")')
 
-    cur.execute(
-        f'insert into projects_table (name, status, descript, budget, deadline, employees) values ("{name}", '
-        f'"{status}", "{descript}","{budget}","{deadline}", 0)')
-    con.commit()
-    return
+                connection.commit()
+                cur.execute(f'Select id from projects_table where name = "{name}"')
+                tmp = cur.fetchall()
+                connection.commit()
+                return {'id': tmp, 'success': True}
+    except Exception as err:
+        return {'success':False, 'error' : err}

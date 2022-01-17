@@ -33,7 +33,6 @@
         <th>ID</th>
         <th>Name</th>
         <th>Status</th>
-        <th>Descript</th>
         <th>Budget</th>
         <th>Deadline</th>
     </tr>
@@ -44,9 +43,8 @@
                 <td>{{row[0]}}</td>
                 <td>{{row[1]}}</td>
                 <td>{{row[2]}}</td>
-                <td>{{row[3][:10]}}...</td>
+                <td>{{row[3]}}</td>
                 <td>{{row[4]}}</td>
-                <td>{{row[5]}}</td>
                 <td>
                     <form action="/delete_project" method="post">
                         <input type="hidden" name="delete" value={{row[0]}}>

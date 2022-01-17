@@ -1,5 +1,7 @@
 import sqlite3
+from Service import path as pat
 
+path = pat.path()
 
 def update_project(**kwargs):
     """
@@ -7,7 +9,7 @@ def update_project(**kwargs):
     :param kwargs:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
+    con = sqlite3.connect(path)
     cur = con.cursor()
     for key in kwargs:
         if kwargs[key] == '':
@@ -23,7 +25,7 @@ def update_employees(**kwargs):
     :param kwargs:
     :return:
     """
-    con = sqlite3.connect('Service/base.db')
+    con = sqlite3.connect(path)
     cur = con.cursor()
     for key in kwargs:
         if kwargs[key] == '':
